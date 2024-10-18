@@ -7,6 +7,7 @@ import { usePokemonType } from "../app/context/PokemonsByTypeContext";
 import Loading from "../app/components/Loading";
 import MoreData from "./components/MoreData";
 import Breadcrumb from "./components/Breadcrumb";
+import useDebounce from "../app/hooks/useDebounce";
 
 export default function Home() {
   const { pokemonData, loading, error } = usePokemonType();
@@ -14,12 +15,22 @@ export default function Home() {
   const loaderRef = useRef(null);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  const filteredPokemons = pokemonData.pokemons.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+  );
 
   const loadMore = () => {
-    if (!isLoadingMore) {
+    if (!isLoadingMore && visibleCount < filteredPokemons.length) {
+      console.log("Loading more Pokémon...");
       setIsLoadingMore(true);
       setTimeout(() => {
-        setVisibleCount((prevCount) => prevCount + 20);
+        setVisibleCount((prevCount) => {
+          const newCount = prevCount + 20;
+          console.log("New visible count:", newCount);
+          return newCount;
+        });
         setIsLoadingMore(false);
       }, 1000);
     }
@@ -27,21 +38,28 @@ export default function Home() {
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && !isLoadingMore) {
-        loadMore();
-      }
+      entries.forEach((entry) => {
+        console.log("Entry:", entry);
+        if (entry.isIntersecting && !isLoadingMore) {
+          console.log("Loader is intersecting");
+          loadMore();
+        }
+      });
     });
 
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
+    const currentLoader = loaderRef.current;
+    if (currentLoader) {
+      observer.observe(currentLoader);
+      console.log("Observer is set up");
     }
 
     return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
+      if (currentLoader) {
+        observer.unobserve(currentLoader);
+        console.log("Observer is cleaned up");
       }
     };
-  }, [isLoadingMore]);
+  }, [isLoadingMore, filteredPokemons.length]);
 
   useEffect(() => {
     setVisibleCount(20);
@@ -54,9 +72,9 @@ export default function Home() {
   if (loading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
 
-  const filteredPokemons = pokemonData.pokemons.filter((pokemon) =>
-    pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  console.log("Total Pokémon:", filteredPokemons.length);
+  console.log("Visible Count:", visibleCount);
+  console.log("Is Loading More:", isLoadingMore);
 
   return (
     <div>
@@ -69,8 +87,12 @@ export default function Home() {
         ))}
 
         {visibleCount < filteredPokemons.length && (
-          <div ref={loaderRef} className="loader">
-            {isLoadingMore && <MoreData />}
+          <div
+            ref={loaderRef}
+            className="loader"
+            style={{ height: "20px", textAlign: "center", marginTop: "20px" }}
+          >
+            {isLoadingMore ? <MoreData /> : <span>Loading more...</span>}
           </div>
         )}
       </div>
