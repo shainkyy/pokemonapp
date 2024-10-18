@@ -1,12 +1,20 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import SearchForm from "../app/components/SearchForm";
-import SelectBox from "./components/SelectBox";
-import PokemonCard from "../app/components/PokemonCard";
+import dynamic from "next/dynamic";
+const SearchForm = dynamic(() => import("../app/components/SearchForm"));
+const SelectBox = dynamic(() => import("./components/SelectBox"));
+const PokemonCard = dynamic(() => import("../app/components/PokemonCard"));
 import { usePokemonType } from "../app/context/PokemonsByTypeContext";
-import Loading from "../app/components/Loading";
-import MoreData from "./components/MoreData";
-import Breadcrumb from "./components/Breadcrumb";
+const Breadcrumb = dynamic(() => import("./components/Breadcrumb"));
+const MoreData = dynamic(() => import("./components/MoreData"));
+const Loading = dynamic(() => import("../app/components/Loading"));
+// import SearchForm from "../app/components/SearchForm";
+// import SelectBox from "./components/SelectBox";
+// import PokemonCard from "../app/components/PokemonCard";
+
+// import Loading from "../app/components/Loading";
+// import MoreData from "./components/MoreData";
+// import Breadcrumb from "./components/Breadcrumb";
 import useDebounce from "../app/hooks/useDebounce";
 
 export default function Home() {
