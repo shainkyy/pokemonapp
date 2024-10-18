@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import SEO from "../app/components/SEO";
 import { PokemonProvider } from "./context/PokemonDetailsContext";
 import { PokemonTypeProvider } from "./context/PokemonsByTypeContext";
 
@@ -22,6 +23,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <SEO />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
