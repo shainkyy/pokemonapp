@@ -1,14 +1,19 @@
 export const fetchPokemonTypes = async () => {
-  const res = await fetch("https://pokeapi.co/api/v2/type");
-  const data = await res.json();
-  return data.results;
+  try {
+    const res = await fetch("https://pokeapi.co/api/v2/type");
+    const data = await res.json();
+    return data.results;
+  } catch (err) {
+    console.error("Failed to fetch Pokémon types:", err);
+    throw err; // Handle or display the error as necessary
+  }
 };
 
-export const fetchPokemonsByType = async (type) => {
-  const res = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
-  const data = await res.json();
-  return data.pokemon;
-};
+// export const fetchPokemonsByType = async (type) => {
+//   const res = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
+//   const data = await res.json();
+//   return data.pokemon;
+// };
 
 export const fetchPokemonDetails = async (name) => {
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);

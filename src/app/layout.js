@@ -1,7 +1,5 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import SEO from "../app/components/SEO";
-
 import { PokemonProvider } from "./context/PokemonDetailsContext";
 import { PokemonTypeProvider } from "./context/PokemonsByTypeContext";
 
@@ -25,7 +23,41 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <SEO />
+      <title>Pokemon Search App | Find Your Favorite Pokémon</title>
+      <meta
+        name="description"
+        content="Search and discover detailed information about all your favorite Pokémon. Easy search, filtering by type, and beautiful card designs."
+      />
+      <meta
+        name="keywords"
+        content="Pokemon, Pokemon Search, Pokemon App, Pokedex, Pokemon Types, Pokemon Cards, Pokemon Finder"
+      />
+      <meta name="author" content="Shainky Yadav" />
+      <meta name="robots" content="index, follow" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+      <meta
+        property="og:title"
+        content="Pokemon Search App | Find Your Favorite Pokémon"
+      />
+      <meta
+        property="og:description"
+        content="Search and discover detailed information about all your favorite Pokémon in an easy-to-use app with beautiful card designs."
+      />
+      <meta property="og:image" content="/images/pokemon-app-preview.png" />
+      <meta property="og:url" content="https://madenzineers.com" />
+      <meta property="og:type" content="madenzineers" />
+      <meta property="og:site_name" content="Pokemon Search App" />
+
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="Pokemon Search App" />
+      <meta
+        name="twitter:description"
+        content="Discover all Pokémon in one place, with type filters and search functionality."
+      />
+      <meta name="twitter:image" content="/images/pokemon-app-preview.png" />
+      <meta name="twitter:creator" content="@shainky121" />
+      <link rel="icon" href="/favicon.ico" type="image/x-icon" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
