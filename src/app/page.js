@@ -1,7 +1,9 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import dynamic from "next/dynamic";
-const SearchForm = dynamic(() => import("../app/components/SearchForm"));
+const SearchForm = dynamic(() => import("../app/components/SearchForm"), {
+  ssr: false,
+});
 const SelectBox = dynamic(() => import("./components/SelectBox"));
 const PokemonCard = dynamic(() => import("../app/components/PokemonCard"));
 import { usePokemonType } from "../app/context/PokemonsByTypeContext";
@@ -25,9 +27,15 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  const filteredPokemons = pokemonData.pokemons.filter((pokemon) =>
-    pokemon.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
-  );
+  // const filteredPokemons = pokemonData.pokemons.filter((pokemon) =>
+  //   pokemon.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+  // );
+
+  const filteredPokemons = useMemo(() => {
+    return pokemonData.pokemons.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    );
+  }, [pokemonData.pokemons, debouncedSearchTerm]);
 
   const loadMore = () => {
     if (!isLoadingMore && visibleCount < filteredPokemons.length) {
@@ -100,7 +108,7 @@ export default function Home() {
             className="loader"
             style={{ height: "20px", textAlign: "center", marginTop: "20px" }}
           >
-            {isLoadingMore ? <MoreData /> : <span>Loading more...</span>}
+            {isLoadingMore ? <MoreData /> : ""}
           </div>
         )}
       </div>

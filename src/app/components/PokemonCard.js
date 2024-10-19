@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function PokemonCard({ name, image }) {
   return (
@@ -6,7 +7,14 @@ export default function PokemonCard({ name, image }) {
       <div className="flex justify-center p-8">
         <div className="w-[90%]  bg-white shadow-xl rounded-lg">
           <div className="flex justify-center bg-[#FFFFFF]">
-            <img src={image} width="60px" height="60px" className="img-size" />
+            <Image
+              src={image}
+              alt={name}
+              width={60}
+              height={60}
+              priority
+              className="img-size"
+            />
           </div>
           <div className="flex flex-col p-6 border-t  bg-[#FAFAFA]">
             <div className="flex flex-col h-full">
