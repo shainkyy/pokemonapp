@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-export default function SEO() {
+function SeoPage() {
   return (
     <Head>
       <title>Pokemon Search App | Find Your Favorite Pokémon</title>
@@ -70,3 +70,5 @@ export default function SEO() {
     </Head>
   );
 }
+
+export default SeoPage;
